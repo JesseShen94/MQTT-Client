@@ -9,14 +9,14 @@ public class MQTTMainQ1 {
             T_fast_2 = "counter/fast/q2";
     public static void main(String[] args) throws MqttException {
         long startTime = System.currentTimeMillis();
-        Client client = new Client(T_fast_2,2);
+        Client client = new Client(T_slow_1,1);
         client.start();
         try {
             Thread.sleep(1000*60);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client.disconnect();
+        client.disconnect(1000*60);
         long endTime = System.currentTimeMillis();
         System.out.println("Use time: "+ (endTime-startTime)/1000/60);
 

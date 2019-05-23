@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public class Client {
     private ArrayList<String> $MessageStream = new ArrayList<>();
     private HashSet<String> $DuplicateMessage = new HashSet<>();
+    private ArrayList<Long> $TimeGap = new ArrayList<>();
     private String USER_NAME = "students";
     private String PASSWORD = "33106331";
     private String clientID = "3310-u5890571";
@@ -55,6 +56,7 @@ public class Client {
             OPTION.setKeepAliveInterval(20);
 
             client.setCallback(new MqttCallback() {
+                private long currectTime = System.currentTimeMillis();
                 @Override
                 public void connectionLost(Throwable throwable) {
                     System.out.println("Connection lost");
@@ -62,14 +64,19 @@ public class Client {
 
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) {
-//                    System.out.println("Topic get: " + s);
-//                    System.out.println("Qos get: "+ mqttMessage.getQos());
-//                    System.out.println("Message get: "+ new String(mqttMessage.getPayload()));
+                    long TimeGet = System.currentTimeMillis();
+                    $TimeGap.add(TimeGet-currectTime);
+                    currectTime = TimeGet;
+                    System.out.println("Topic get: " + s);
+                    System.out.println("Qos get: "+ mqttMessage.getQos());
+                    System.out.println("Message get: "+ new String(mqttMessage.getPayload()));
+                    //TODO: out of order
                     // Handel the message only with numbers
                     if(isDig.matcher(new String(mqttMessage.getPayload())).matches()){
                         $MessageStream.add(new String(mqttMessage.getPayload()));
                         $DuplicateMessage.add(new String(mqttMessage.getPayload()));
                     }
+
                 }
 
                 @Override
@@ -90,7 +97,7 @@ public class Client {
 
     /**
      * */
-    private void statistic(ArrayList<String> MessageStream, HashSet<String> DuplicateMessage){
+    private void statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
         double DUPL_RATE = MessageStream.size()==0?0:DuplicateMessage.size()/(double)MessageStream.size();
         BigDecimal LOST_Gap = new BigDecimal("0");
         BigDecimal PRE_Message = new BigDecimal(MessageStream.get(0));
@@ -104,15 +111,38 @@ public class Client {
         BigDecimal LOST_RATE = LOST_Gap.divide((TotalLength), 4, BigDecimal.ROUND_HALF_UP);
         LOST_RATE = LOST_RATE.multiply(new BigDecimal("100"));
         LOST_RATE = LOST_RATE.divide(new BigDecimal("1"), 2, BigDecimal.ROUND_HALF_UP);
-        System.out.println("Total length: "+ MessageStream.size());
+        BigDecimal REV_RATE = (new BigDecimal(MessageStream.size())).divide(new BigDecimal(duration/1000), 2,BigDecimal.ROUND_UP);
+
+        BigDecimal Timetotal = new BigDecimal("0");
+        BigDecimal TimeVaria = new BigDecimal("0");
+        for(long time : TimeGap){
+            Timetotal = Timetotal.add(new BigDecimal(time));
+        }
+        Timetotal = Timetotal.divide(new BigDecimal(TimeGap.size()), 2, BigDecimal.ROUND_UP);
+        for(long time : TimeGap){
+            BigDecimal part = (new BigDecimal(time)).subtract(Timetotal);
+            part = part.multiply(part);
+            TimeVaria = TimeVaria.add(part);
+        }
+        TimeVaria = TimeVaria.divide(new BigDecimal(TimeGap.size()), 2, BigDecimal.ROUND_UP);
+        System.out.println("Total length actual receive: " + MessageStream.size());
+        System.out.println("Total length should receive: " + TotalLength.toString());
         System.out.println("Duplicate rate: " + (100 - (DUPL_RATE*100))+"%");
-        System.out.println("Lost rate: "+ LOST_RATE.toString()+"%");
-        System.out.println("Pot length: " + TotalLength.toString());
+        System.out.println("Lost rate: " + LOST_RATE.toString()+"%");
+        System.out.println("Receive rate: " + REV_RATE.toString()+" messages pre sec");
+        System.out.println("Arv time: " + Timetotal.toString() + " mils");
+        System.out.println("Variation:" + TimeVaria.toString());
+        //TODO: gap-variation
     }
 
-    public void disconnect() throws MqttException {
+    private void disconnect() throws MqttException {
         client.disconnect();
         client.close();
-        statistic($MessageStream, $DuplicateMessage);
+    }
+
+    public void disconnect(long duration) throws MqttException {
+        client.disconnect();
+        client.close();
+        statistic($MessageStream, $TimeGap, $DuplicateMessage, duration);
     }
 }
