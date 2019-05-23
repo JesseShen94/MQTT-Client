@@ -1,5 +1,5 @@
 # MQTT-Client
-The MQTT for COMP3310/6331
+## The MQTT for COMP3310/6331
 
 impled of ooo and the dup rate:
 
