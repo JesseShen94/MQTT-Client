@@ -7,14 +7,14 @@ use the current one to minus last one, if equal then dup, if smaller than 0 then
 
 NOTHING CHANGE ALOT.
   
-BigInteger b = new BigInteger(message);
+    BigInteger b = new BigInteger(message);
 
-for(String message : Array){
+    for(String message : Array){
 
-    BigInteger bi = new BigInteger(message);
+       BigInteger bi = new BigInteger(message);
     
-    if(bi.sub(b) < 0) ooo++;
+       if(bi.sub(b) < 0) ooo++;
     
-    else if(bi.sub(b) == 0) dup++;
+       else if(bi.sub(b) == 0) dup++;
     
-}
+    }
