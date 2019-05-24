@@ -70,7 +70,6 @@ public class Client {
                     System.out.println("Topic get: " + s);
                     System.out.println("Qos get: "+ mqttMessage.getQos());
                     System.out.println("Message get: "+ new String(mqttMessage.getPayload()));
-                    //TODO: out of order
                     // Handel the message only with numbers
                     if(isDig.matcher(new String(mqttMessage.getPayload())).matches()){
                         $MessageStream.add(new String(mqttMessage.getPayload()));
@@ -87,7 +86,7 @@ public class Client {
             });
             //可露希尔赛高！CLOSURE IS THE BEST!
             MqttTopic topic = client.getTopic(TOPIC);
-            OPTION.setWill(topic, "closed".getBytes(), 1, true);// remove the will message.
+            OPTION.setWill(topic, "".getBytes(), 1, false);// remove the will message.
             client.connect(OPTION);
             int[] Qos = {qos};
             String[] top = {TOPIC};
@@ -128,14 +127,17 @@ public class Client {
         System.out.println("Total length actual receive: " + MessageStream.size());
         System.out.println("Total length should receive: " + TotalLength.toString());
         System.out.println("Duplicate rate: " + (100 - (DUPL_RATE*100))+"%");
+        System.out.println(DuplicateMessage.size());
         System.out.println("Lost rate: " + LOST_RATE.toString()+"%");
         System.out.println("Receive rate: " + REV_RATE.toString()+" messages pre sec");
         System.out.println("Arv time: " + Timetotal.toString() + " mils");
         System.out.println("Variation:" + TimeVaria.toString());
-        //TODO: gap-variation
     }
 
-    private void disconnect() throws MqttException {
+    /**
+     * inner class use
+     * */
+    public void disconnect() throws MqttException {
         client.disconnect();
         client.close();
     }
