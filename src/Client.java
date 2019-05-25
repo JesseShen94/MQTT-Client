@@ -98,19 +98,33 @@ public class Client {
      * */
     private void statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
         double DUPL_RATE = MessageStream.size()==0?0:DuplicateMessage.size()/(double)MessageStream.size();
-        BigDecimal LOST_Gap = new BigDecimal("0");
+        BigDecimal TotalLength = new BigDecimal("0");
         BigDecimal PRE_Message = new BigDecimal(MessageStream.get(0));
-        for (int i = 1; i < MessageStream.size(); i++) {
-            BigDecimal CUR_Message = new BigDecimal(MessageStream.get(i));
-            LOST_Gap = LOST_Gap.add(CUR_Message.subtract(PRE_Message).subtract(new BigDecimal("1")));
-            PRE_Message = CUR_Message;
+        BigDecimal OOO = new BigDecimal("0");
+
+        for(String message : MessageStream){
+            ArrayList<Boolean> out = new ArrayList<>();
+            for (int i = 0; i < MessageStream.indexOf(message); i++) {
+                if(new BigDecimal(message).compareTo(new BigDecimal(MessageStream.get(i))) == -1) out.add(true);
+            }
+            if (out.contains(true)) OOO = OOO.add(new BigDecimal(1));
         }
-        BigDecimal TotalLength = new BigDecimal(MessageStream.size()+"");
-        TotalLength = TotalLength.add(LOST_Gap);
+        //Out of order
+
+        BigDecimal minDec = new BigDecimal(MessageStream.get(0));
+        BigDecimal maxDec = new BigDecimal(MessageStream.get(MessageStream.size()-1));
+        TotalLength = maxDec.subtract(minDec).add(new BigDecimal(1));
+        BigDecimal LOST_Gap = new BigDecimal(MessageStream.size()+"");
+        //MAX - MIN + 1 = actual message should have
+        //MessageStream.size() = actual received.
+        //MessageStream.size()/(MAX - MIN + 1) = LOST_RATE
         BigDecimal LOST_RATE = LOST_Gap.divide((TotalLength), 4, BigDecimal.ROUND_HALF_UP);
+        LOST_RATE = (new BigDecimal("1")).subtract(LOST_RATE);
         LOST_RATE = LOST_RATE.multiply(new BigDecimal("100"));
         LOST_RATE = LOST_RATE.divide(new BigDecimal("1"), 2, BigDecimal.ROUND_HALF_UP);
+
         BigDecimal REV_RATE = (new BigDecimal(MessageStream.size())).divide(new BigDecimal(duration/1000), 2,BigDecimal.ROUND_UP);
+        //MessageStream.size() / total time = RECEIVE RATE
 
         BigDecimal Timetotal = new BigDecimal("0");
         BigDecimal TimeVaria = new BigDecimal("0");
@@ -118,6 +132,8 @@ public class Client {
             Timetotal = Timetotal.add(new BigDecimal(time));
         }
         Timetotal = Timetotal.divide(new BigDecimal(TimeGap.size()), 2, BigDecimal.ROUND_UP);
+        // Mean for each inner message gap
+
         for(long time : TimeGap){
             BigDecimal part = (new BigDecimal(time)).subtract(Timetotal);
             part = part.multiply(part);
@@ -132,6 +148,7 @@ public class Client {
         System.out.println("Receive rate: " + REV_RATE.toString()+" messages pre sec");
         System.out.println("Arv time: " + Timetotal.toString() + " mils");
         System.out.println("Variation:" + TimeVaria.toString());
+        System.out.println("Out of order: " + OOO.toString());
     }
 
     /**
