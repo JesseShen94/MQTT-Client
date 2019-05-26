@@ -34,17 +34,15 @@ public class Publisher {
         }
     }
 
-    public void publish(String topic, String message) throws MqttException, MqttPersistenceException{
+    public void publish(String topic, String message) throws MqttException{
         MqttTopic MQTopic = client.getTopic($TOPIC+topic);
-//        MqttMessage MQMessage = new MqttMessage();
-//        MQMessage.setQos(qos);
-//        MQMessage.setRetained(true);
-//        MQMessage.setPayload(message.getBytes());
         MqttDeliveryToken courier = MQTopic.publish(message.getBytes(), qos, true);
         courier.waitForCompletion();
         System.out.println("Publishing on topic: "+ MQTopic.toString());
         System.out.println("Message: "+ message);
         System.out.println("Publish completely");
+        client.disconnect();
+        client.close();
     }
 
 

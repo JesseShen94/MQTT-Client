@@ -13,7 +13,7 @@ public class MQTTMainQ2 {
 
     public static void main(String[] args) throws MqttException {
         long startTime = System.currentTimeMillis();
-        Client client = new Client(T_fast_2, 0,false);
+        Client client = new Client(T_fast_2, 0);
         client.start();
         try {
             Thread.sleep(1000*60*5);
