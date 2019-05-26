@@ -20,11 +20,11 @@ public class Client {
     private String HOST = "tcp://comp3310.ddns.net:1883";
     private String TOPIC = "$SYS";
     private int qos = 0;
+    private boolean PRINT = true;
     private Pattern isDig = Pattern.compile("[0-9]*");
-
+    private HashSet<String> TOPICS = new HashSet<>();
     private MqttClient client;
     private MqttConnectOptions OPTION;
-    private MqttTopic topic;
     private int MQTTQOS = -1;
 
     public Client(){/* Keep default*/}
@@ -47,6 +47,12 @@ public class Client {
         this.qos = Qos;
     }
 
+    public Client(String topic, int Qos, boolean print){
+        this.TOPIC = topic;
+        this.qos = Qos;
+        this.PRINT = print;
+    }
+
     protected void start(){
         try{
             client = new MqttClient(HOST, clientID, new MemoryPersistence());
@@ -58,7 +64,7 @@ public class Client {
             OPTION.setKeepAliveInterval(20);
 
             client.setCallback(new MqttCallback() {
-                private long currectTime = System.currentTimeMillis();
+                private long currentTime = System.currentTimeMillis();
                 @Override
                 public void connectionLost(Throwable throwable) {
                     System.out.println("Connection lost");
@@ -67,11 +73,14 @@ public class Client {
                 @Override
                 public void messageArrived(String s, MqttMessage mqttMessage) {
                     long TimeGet = System.currentTimeMillis();
-                    $TimeGap.add(TimeGet-currectTime);
-                    currectTime = TimeGet;
-                    System.out.println("Topic get: " + s);
-                    System.out.println("Qos get: "+ mqttMessage.getQos());
-                    System.out.println("Message get: "+ new String(mqttMessage.getPayload()));
+                    $TimeGap.add(TimeGet- currentTime);
+                    currentTime = TimeGet;
+                    TOPICS.add(s);
+                    if(PRINT){
+                        System.out.println("Topic get: " + s);
+                        System.out.println("Qos get: "+ mqttMessage.getQos());
+                        System.out.println("Message get: "+ new String(mqttMessage.getPayload()));
+                    }
                     MQTTQOS = mqttMessage.getQos();
                     // Handel the message only with numbers
                     if(isDig.matcher(new String(mqttMessage.getPayload())).matches()){
@@ -87,8 +96,8 @@ public class Client {
 
                 }
             });
-            topic = client.getTopic(TOPIC);
-            OPTION.setWill(topic, "".getBytes(), 1, false);// remove the will message.
+            //topic = client.getTopic(TOPIC);
+            //OPTION.setWill(topic, "".getBytes(), 1, false);// remove the will message.
             client.connect(OPTION);
             client.subscribe(TOPIC, qos);
         }catch (Exception e){}
@@ -147,7 +156,11 @@ public class Client {
             TimeVaria = TimeVaria.add(part);
         }
         TimeVaria = TimeVaria.divide(new BigDecimal(TimeGap.size()), 2, BigDecimal.ROUND_HALF_UP);
-        System.out.println("Topic: " + topic.toString());
+        System.out.print("Topics: ");
+        for(String topic : TOPICS){
+            System.out.print(topic + "; ");
+        }
+        System.out.println();
         System.out.println("QoS: "+ MQTTQOS);
         System.out.println("Total length actual receive: " + MessageStream.size());
         System.out.println("Total length should receive: " + TotalLength.toString());

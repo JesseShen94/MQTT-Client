@@ -6,12 +6,14 @@ public class MQTTMainQ2 {
             T_slow_2 = "counter/slow/q2",
             T_fast_0 = "counter/fast/q0",
             T_fast_1 = "counter/fast/q1",
-            T_fast_2 = "counter/fast/q2";
+            T_fast_2 = "counter/fast/q2",
+            T_fast = "counter/fast/#",
+            T_slow = "counter/slow/#";
 
 
     public static void main(String[] args) throws MqttException {
         long startTime = System.currentTimeMillis();
-        Client client = new Client(T_fast_2, 2);
+        Client client = new Client(T_fast_2, 0,false);
         client.start();
         try {
             Thread.sleep(1000*60*5);
