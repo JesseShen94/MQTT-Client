@@ -27,8 +27,10 @@ public class Client {
     private MqttConnectOptions OPTION;
     private int MQTTQOS = -1;
 
+    /***/
     public Client(){/* Keep default*/}
 
+    /***/
     public Client(String UserName, String Password, String ClientID, String host, String topic, int Qos){
         this.USER_NAME = UserName;
         this.PASSWORD = Password;
@@ -38,21 +40,25 @@ public class Client {
         this.qos = Qos;
     }
 
+    /***/
     public Client(String topic){
         this.TOPIC = topic;
     }
 
+    /***/
     public Client(String topic, int Qos){
         this.TOPIC = topic;
         this.qos = Qos;
     }
 
+    /***/
     public Client(String topic, int Qos, boolean print){
         this.TOPIC = topic;
         this.qos = Qos;
         this.PRINT = print;
     }
 
+    /***/
     protected void start(){
         try{
             client = new MqttClient(HOST, clientID, new MemoryPersistence());
@@ -181,6 +187,7 @@ public class Client {
         client.close();
     }
 
+    /***/
     public void disconnect(long duration) throws MqttException {
         client.disconnect();
         client.close();
