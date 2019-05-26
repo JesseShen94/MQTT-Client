@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class is the client class for process mqtt request.
+ *
  * @author Yanlong LI, u5890571
  * */
 public class Client {
@@ -27,10 +28,15 @@ public class Client {
     private MqttConnectOptions OPTION;
     private int MQTTQOS = -1;
 
-    /***/
+    /**
+     * The default constructor without parameter.
+     * */
     public Client(){/* Keep default*/}
 
-    /***/
+    /**
+     * The constructor for new MQTT client.
+     * All client information needed
+     * */
     public Client(String UserName, String Password, String ClientID, String host, String topic, int Qos){
         this.USER_NAME = UserName;
         this.PASSWORD = Password;
@@ -40,26 +46,35 @@ public class Client {
         this.qos = Qos;
     }
 
-    /***/
+    /**
+     * The constructor which set up topic only.
+     * */
     public Client(String topic){
         this.TOPIC = topic;
     }
 
-    /***/
+    /**
+     * The constructor set up topic and QoS.
+     * */
     public Client(String topic, int Qos){
         this.TOPIC = topic;
         this.qos = Qos;
     }
 
-    /***/
+    /**
+     * The constructor set up topic, QoS and determined print messages
+     * on display or not.
+     * */
     public Client(String topic, int Qos, boolean print){
         this.TOPIC = topic;
         this.qos = Qos;
         this.PRINT = print;
     }
 
-    /***/
-    protected void start(){
+    /**
+     * Establish connection and receive messages from broker.
+     * */
+    public void start(){
         try{
             client = new MqttClient(HOST, clientID, new MemoryPersistence());
             OPTION = new MqttConnectOptions();
@@ -70,6 +85,10 @@ public class Client {
             OPTION.setKeepAliveInterval(20);
 
             client.setCallback(new MqttCallback() {
+                /**
+                 * Closure Callback class.
+                 * Handle the message from broker
+                 * and collect the massage for statistic*/
                 private long currentTime = System.currentTimeMillis();
                 @Override
                 public void connectionLost(Throwable throwable) {
@@ -102,14 +121,22 @@ public class Client {
 
                 }
             });
-            //topic = client.getTopic(TOPIC);
-            //OPTION.setWill(topic, "".getBytes(), 1, false);// remove the will message.
             client.connect(OPTION);
             client.subscribe(TOPIC, qos);
         }catch (Exception e){}
     }
 
     /**
+     * The private method to analysis the data.
+     * Analysis include the lost rate, duplicate rate, receive rate, average time gap between all message,
+     * mis-ordered message rate and the variation about time gap between all message.
+     *
+     * This method handle all calculation via BigDecimal to avoid out of bound in int.
+     *
+     * @param MessageStream a list contain all message get from broker.
+     * @param TimeGap a list contain all time gap between each message.
+     * @param DuplicateMessage a set contain all non-duplicate message.
+     * @param duration a double data about how this session take.
      * */
     private void statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
         double DUPL_RATE = MessageStream.size()==0?0:DuplicateMessage.size()/(double)MessageStream.size();
@@ -180,14 +207,17 @@ public class Client {
     }
 
     /**
-     * inner class use
+     * Terminate the connection between the client and the broker.
      * */
     public void disconnect() throws MqttException {
         client.disconnect();
         client.close();
     }
 
-    /***/
+    /**
+     * Terminate the connection between the client and the broker.
+     *
+     * @param duration a time about how long this session token.*/
     public void disconnect(long duration) throws MqttException {
         client.disconnect();
         client.close();

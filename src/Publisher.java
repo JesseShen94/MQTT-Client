@@ -1,7 +1,11 @@
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-/***/
+/**
+ * The main class for publish message to broker.
+ *
+ * @author Yanlong LI, u5890571
+ * */
 public class Publisher {
     private String USER_NAME = "students";
     private String PASSWORD = "33106331";
@@ -11,14 +15,16 @@ public class Publisher {
     private int qos = 2;
     private MqttClient client;
 
-    private String message;
-    private String topic;
-    /***/
+    /**
+     * The default constructor without parameter.
+     * */
     public Publisher() throws MqttException {
         client = new MqttClient(HOST, clientID, new MemoryPersistence());
         linkStart();
     }
-    /***/
+    /**
+     * Establish connection.
+     * */
     private void linkStart(){
         MqttConnectOptions OPTION = new MqttConnectOptions();
         OPTION.setCleanSession(true);
@@ -33,7 +39,12 @@ public class Publisher {
             e.printStackTrace();
         }
     }
-    /***/
+    /**
+     * Publish messages and topics to broker.
+     *
+     * @param topic a topic String
+     * @param message a message String
+     * */
     public void publish(String topic, String message) throws MqttException{
         MqttTopic MQTopic = client.getTopic($TOPIC+topic);
         MqttDeliveryToken courier = MQTopic.publish(message.getBytes(), qos, true);
@@ -42,7 +53,9 @@ public class Publisher {
         System.out.println("Message: "+ message);
         System.out.println("Publish completely");
     }
-    /***/
+    /**
+     * Terminate the connection between the client and the broker.
+     * */
     public void disconnect() throws MqttException{
         client.disconnect();
         client.close();

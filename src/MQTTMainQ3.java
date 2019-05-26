@@ -1,5 +1,16 @@
 import org.eclipse.paho.client.mqttv3.MqttException;
-/***/
+
+/**
+ * This class is the main class for Q3.
+ *
+ * This class based on the Publisher class
+ * and publish all statistical data to broker.
+ *
+ * Cooperate with MQTTMainQ2. All data copied
+ * for MQTTMainQ2
+ *
+ * @author Yanlong LI, u5890571
+ * */
 public class MQTTMainQ3 {
     private static String[] topics = {"slow/0/recv", "slow/0/loss", "slow/0/dupe", "slow/0/ooo", "slow/0/gap", "slow/0/gvar",
             "slow/1/recv", "slow/1/loss", "slow/1/dupe", "slow/1/ooo", "slow/1/gap", "slow/1/gvar",
