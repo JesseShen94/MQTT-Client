@@ -15,5 +15,8 @@ public class TestQ3 {
         client.disconnect();
     }
 
-    //TODO 打包啊woc, 好难搞
+    //TODO: 打包啊woc, 好难搞;
+    //TODO: remove any duplicated code, unused code.
+    //TODO: increase the speed for OOO
+    //TODO: check on linux machine
 }
