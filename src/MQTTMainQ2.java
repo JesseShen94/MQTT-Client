@@ -9,7 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * @author Yanlong LI, u5890571
  * */
 public class MQTTMainQ2 {
-    private static String T_slow_0 = "counter/slow/q0",
+    private final static String T_slow_0 = "counter/slow/q0",
             T_slow_1 = "counter/slow/q1",
             T_slow_2 = "counter/slow/q2",
             T_fast_0 = "counter/fast/q0",
@@ -32,5 +32,7 @@ public class MQTTMainQ2 {
         client.disconnect(1000*60*5);
         long endTime = System.currentTimeMillis();
         System.out.println("Use time: "+ (endTime-startTime)/1000/60);
+        Publisher publisher = new Publisher();
     }
+    //TODO merge Q2 and Q3.
 }

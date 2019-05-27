@@ -18,12 +18,12 @@ public class MQTTMainQ3 {
             "fast/0/recv", "fast/0/loss", "fast/0/dupe", "fast/0/ooo", "fast/0/gap", "fast/0/gvar",
             "fast/1/recv", "fast/1/loss", "fast/1/dupe", "fast/1/ooo", "fast/1/gap", "fast/1/gvar",
             "fast/2/recv", "fast/2/loss", "fast/2/dupe", "fast/2/ooo", "fast/2/gap", "fast/2/gvar"};
-    private static String[] messages = {"0.98","0","0","0","1028.24","7796.39",
-            "0.98","0","0","0","1028.16","2772.42",
-            "0.98","0","0","0","1029.9","4423.69",
-            "272","0","0","0","3.69","473.29",
-            "23.34","88.47","0","0","43.02","10780.73",
-            "11.86","93.98","0","0","84.66","33351.5"};
+    private static String[] messages = {"0.98","0","0","0","1028.24","88.30",
+            "0.98","0","0","0","1028.16","52.65",
+            "0.98","0","0","0","1029.9","66.51",
+            "272","0","0","0","3.69","21.76",
+            "23.34","88.47","0","0","43.02","103.83",
+            "11.86","93.98","0","0","84.66","182.62"};
 
     public static void main(String[] args) throws MqttException {
         Publisher publisher = new Publisher();
@@ -34,4 +34,5 @@ public class MQTTMainQ3 {
         }
         publisher.disconnect();
     }
+    //TODO merge Q2 and Q3.
 }

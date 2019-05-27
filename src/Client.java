@@ -19,7 +19,7 @@ public class Client {
     private String PASSWORD = "33106331";
     private String clientID = "3310-u5890571";
     private String HOST = "tcp://comp3310.ddns.net:1883";
-    private String TOPIC = "$SYS";
+    private String TOPIC = "$SYS/#";
     private int qos = 0;
     private boolean PRINT = true;
     private Pattern isDig = Pattern.compile("[0-9]*");
@@ -140,7 +140,6 @@ public class Client {
      * */
     private void statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
         double DUPL_RATE = MessageStream.size()==0?0:DuplicateMessage.size()/(double)MessageStream.size();
-        BigDecimal TotalLength = new BigDecimal("0");
         BigDecimal OOO = new BigDecimal("0");
 
         for(String message : MessageStream){
@@ -162,11 +161,14 @@ public class Client {
         //Out of order
         BigDecimal minDec = new BigDecimal(MessageStream.get(0));
         BigDecimal maxDec = new BigDecimal(MessageStream.get(MessageStream.size()-1));
-        TotalLength = maxDec.subtract(minDec).add(new BigDecimal(1));
+        BigDecimal TotalLength = maxDec.subtract(minDec).add(new BigDecimal(1));
         BigDecimal LOST_Gap = new BigDecimal(MessageStream.size()+"");
-        //MAX - MIN + 1 = actual message should have
-        //MessageStream.size() = actual received.
-        //MessageStream.size()/(MAX - MIN + 1) = LOST_RATE
+        /* Method:
+          MAX - MIN + 1 = actual message should have
+          MessageStream.size() = actual received.
+          MessageStream.size()/(MAX - MIN + 1) = LOST_RATE
+        */
+
         BigDecimal LOST_RATE = LOST_Gap.divide((TotalLength), 4, BigDecimal.ROUND_HALF_UP);
         LOST_RATE = (new BigDecimal(1)).subtract(LOST_RATE);
         LOST_RATE = LOST_RATE.multiply(new BigDecimal(100));
@@ -184,11 +186,14 @@ public class Client {
         // Mean for each inner message gap
 
         for(long time : TimeGap){
-            BigDecimal part = (new BigDecimal(time)).subtract(Timetotal);
-            part = part.multiply(part);
-            TimeVaria = TimeVaria.add(part);
+            BigDecimal part = (new BigDecimal(time)).subtract(Timetotal); // current time gap - average time gap. (x - μ)
+            part = part.multiply(part); // square it. (x - μ)^2
+            TimeVaria = TimeVaria.add(part); // add. (∑(x - μ)^2)
         }
-        TimeVaria = TimeVaria.divide(new BigDecimal(TimeGap.size()), 2, BigDecimal.ROUND_HALF_UP);
+        TimeVaria = TimeVaria.divide(new BigDecimal(TimeGap.size()-1), 2, BigDecimal.ROUND_HALF_UP); // (∑(x - μ)^2) / n
+        double standD = Math.sqrt(TimeVaria.doubleValue());
+        //variation = (∑(x - μ)^2) / (n - 1). μ is mean, n is the number of total messages.
+        //SD = sqrt(variation);
         System.out.print("Topics: ");
         for(String topic : TOPICS){
             System.out.print(topic + "; ");
@@ -201,7 +206,7 @@ public class Client {
         System.out.println("Lost rate: " + LOST_RATE.toString()+"%");
         System.out.println("Receive rate: " + REV_RATE.toString()+" messages pre sec");
         System.out.println("Arv time: " + Timetotal.toString() + " mils");
-        System.out.println("Variation:" + TimeVaria.toString());
+        System.out.println("Variation: " + standD);
         System.out.println("Out of order: " + OOO.toString());
         System.out.println("Out of order: " + OOO_RATE.toString()+"%");
     }
@@ -216,6 +221,7 @@ public class Client {
 
     /**
      * Terminate the connection between the client and the broker.
+     * This method will return the statistic analysis as well.
      *
      * @param duration a time about how long this session token.*/
     public void disconnect(long duration) throws MqttException {
