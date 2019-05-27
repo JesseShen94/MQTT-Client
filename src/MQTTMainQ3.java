@@ -18,7 +18,7 @@ public class MQTTMainQ3 {
             "fast/0/recv", "fast/0/loss", "fast/0/dupe", "fast/0/ooo", "fast/0/gap", "fast/0/gvar",
             "fast/1/recv", "fast/1/loss", "fast/1/dupe", "fast/1/ooo", "fast/1/gap", "fast/1/gvar",
             "fast/2/recv", "fast/2/loss", "fast/2/dupe", "fast/2/ooo", "fast/2/gap", "fast/2/gvar"};
-    private static String[] messages = {"0.98","0","0","0","1028.24","88.30",
+    private static String[] BCKUPmessages = {"0.98","0","0","0","1028.24","88.30",
             "0.98","0","0","0","1028.16","52.65",
             "0.98","0","0","0","1029.9","66.51",
             "272","0","0","0","3.69","21.76",
@@ -30,9 +30,8 @@ public class MQTTMainQ3 {
         publisher.publish("language","Java, used package: org.eclipse.paho.client.mqttv3-1.2.1.jar");
         publisher.publish("network ", "WAN: NBN. LAN: Wi-Fi");
         for (int i = 0; i < 36; i++) {
-            publisher.publish(topics[i], messages[i]);
+            publisher.publish(topics[i], BCKUPmessages[i]);
         }
         publisher.disconnect();
     }
-    //TODO merge Q2 and Q3.
 }

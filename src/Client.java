@@ -71,6 +71,12 @@ public class Client {
         this.PRINT = print;
     }
 
+    public Client(String topic, String clientID, int Qos){
+        this.TOPIC = topic;
+        this.qos = Qos;
+        this.clientID = clientID;
+    }
+
     /**
      * Establish connection and receive messages from broker.
      * */
@@ -138,7 +144,7 @@ public class Client {
      * @param DuplicateMessage a set contain all non-duplicate message.
      * @param duration a double data about how this session take.
      * */
-    private void statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
+    private ArrayList<String> statistic(ArrayList<String> MessageStream, ArrayList<Long> TimeGap, HashSet<String> DuplicateMessage, long duration){
         double DUPL_RATE = MessageStream.size()==0?0:DuplicateMessage.size()/(double)MessageStream.size();
         BigDecimal OOO = new BigDecimal("0");
 
@@ -198,6 +204,8 @@ public class Client {
         for(String topic : TOPICS){
             System.out.print(topic + "; ");
         }
+        ArrayList<String> outData = new ArrayList<>();
+
         System.out.println();
         System.out.println("QoS: "+ MQTTQOS);
         System.out.println("Total length actual receive: " + MessageStream.size());
@@ -207,8 +215,14 @@ public class Client {
         System.out.println("Receive rate: " + REV_RATE.toString()+" messages pre sec");
         System.out.println("Arv time: " + Timetotal.toString() + " mils");
         System.out.println("Variation: " + standD);
-        System.out.println("Out of order: " + OOO.toString());
         System.out.println("Out of order: " + OOO_RATE.toString()+"%");
+        outData.add(REV_RATE.toString()+" messages pre sec");
+        outData.add(LOST_RATE.toString()+"%");
+        outData.add((100 - (DUPL_RATE*100))+"%");
+        outData.add(OOO_RATE.toString()+"%");
+        outData.add(Timetotal.toString() + " mils");
+        outData.add(standD+"");
+        return outData;
     }
 
     /**
@@ -228,5 +242,18 @@ public class Client {
         client.disconnect();
         client.close();
         statistic($MessageStream, $TimeGap, $DuplicateMessage, duration);
+    }
+
+    /**
+     * Terminate the connection between the client and the broker.
+     * This method return the statistic analysis as ArrayList.
+     *
+     * @param duration a time about how long this session token.
+     * @param reTurnData return the data to main class
+     * */
+    public ArrayList<String> disconnect(long duration, boolean reTurnData) throws MqttException {
+        client.disconnect();
+        client.close();
+        return statistic($MessageStream, $TimeGap, $DuplicateMessage, duration);
     }
 }

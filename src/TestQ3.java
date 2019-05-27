@@ -7,8 +7,12 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * */
 public class TestQ3 {
     public static void main(String[] args) throws InterruptedException, MqttException {
-        Client client = new Client("studentreport/u5890571/#", 0);
+        Client client = new Client("studentreport/u5890571/#","3310-u0000000", 2);
         client.start();
+
+        Thread.sleep(10000);
+
+        client.disconnect();
     }
 
     //TODO 打包啊woc, 好难搞
