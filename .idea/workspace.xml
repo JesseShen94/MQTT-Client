@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b284fe1-6852-441c-b65e-1784ccf3ef2f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MQTTMainQ2O.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/documents/~$10a3report.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MQTTMainQ2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MQTTMainQ2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,11 +32,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="7" />
+          <entry key="txt" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="7" />
+          <entry key="PLAIN_TEXT" value="12" />
         </counts>
       </usages-collector>
     </session>
@@ -64,7 +63,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MQTTMainQ2.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
@@ -76,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Makefile">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="11" column="14" lean-forward="true" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
+              <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -171,6 +170,7 @@
         <option value="$PROJECT_DIR$/src/TestQ3.java" />
         <option value="$PROJECT_DIR$/src/MQTTMainQ2O.java" />
         <option value="$PROJECT_DIR$/src/MQTTMainQ2.java" />
+        <option value="$PROJECT_DIR$/src/Makefile" />
       </list>
     </option>
   </component>
@@ -187,10 +187,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="840" />
-    <option name="y" value="178" />
-    <option name="width" value="2484" />
-    <option name="height" value="1775" />
+    <option name="x" value="-27" />
+    <option name="y" value="146" />
+    <option name="width" value="1185" />
+    <option name="height" value="750" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -227,7 +227,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559021821046" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559036890557" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -506,11 +506,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558879675097</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="final commit">
+      <created>1559036052919</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1559036052919</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94976000" />
+    <option name="totallyTimeSpent" value="95083000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -522,9 +529,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1097" extended-state="0" />
+    <frame x="-27" y="146" width="1185" height="750" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17678382" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2904637" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -603,7 +611,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Q1, Q2, Q3 impd" />
-    <option name="LAST_COMMIT_MESSAGE" value="Q1, Q2, Q3 impd" />
+    <MESSAGE value="final commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="final commit" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$PROJECT_DIR$/org.eclipse.paho.client.mqttv3-1.2.1.jar!/org/eclipse/paho/client/mqttv3/MqttCallback.class">
@@ -699,16 +708,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="214" column="65" selection-start-line="214" selection-start-column="65" selection-end-line="214" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Publisher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
@@ -733,13 +732,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="14" lean-forward="true" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MQTTMainQ2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -747,6 +739,23 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="214" column="65" selection-start-line="214" selection-start-column="65" selection-end-line="214" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
         </state>
       </provider>
     </entry>
