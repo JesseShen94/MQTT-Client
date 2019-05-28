@@ -18,7 +18,7 @@ public class MQTTMainQ2 {
             "fast/0/recv", "fast/0/loss", "fast/0/dupe", "fast/0/ooo", "fast/0/gap", "fast/0/gvar",
             "fast/1/recv", "fast/1/loss", "fast/1/dupe", "fast/1/ooo", "fast/1/gap", "fast/1/gvar",
             "fast/2/recv", "fast/2/loss", "fast/2/dupe", "fast/2/ooo", "fast/2/gap", "fast/2/gvar"};
-    private static final long FIVE_MIN = 1000*60*5;
+    private final static long FIVE_MIN = 1000*60*5;
 
 
     public static void main(String[] args) throws MqttException {
@@ -34,15 +34,6 @@ public class MQTTMainQ2 {
             }
             DataStorage.add(client.disconnect(FIVE_MIN,true));
         }
-
-//        Client client = new Client(T_slow_0, 0);
-//        client.start();
-//        try {
-//            Thread.sleep(1000*60*5);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        client.disconnect(1000*60*5);
         long endTime = System.currentTimeMillis();
         System.out.println("Use time: "+ (endTime-startTime)/1000/60);
         Publisher publisher = new Publisher(2, true);
